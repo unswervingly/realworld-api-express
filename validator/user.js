@@ -7,7 +7,7 @@ const md5 = require('../util/md5')
 
 // 注册验证
 exports.register = validate([
-    // 1. 配置验证规则
+    // 1. 配置验证规则 
     body('user.username')
         .notEmpty().withMessage("用户名不能为空")
         // 自定义验证
@@ -44,7 +44,7 @@ exports.login = [
     // 用户是否存在
     validate([
         body("user.email").custom(async (email, { req }) => {
-            // select 查询数据不会有 密码,添加这个属性就可以拿到了
+            // select 查询数据不会有 密码,所以要添加这个属性就可以拿到了
             const user = await User.findOne({ email }).select([
                 "email",
                 "password",
