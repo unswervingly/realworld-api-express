@@ -1,5 +1,7 @@
 const { User } = require('../model')
+const jwt = require('../util/jwt')
 
+const { jwtSecret } = require('../config/config.default')
 
 //  提取控制器模块
 // 将具体的处理请求的操作提取到控制器模块中
@@ -9,7 +11,20 @@ exports.login = async (req, res, next) => {
     try {
         // 1. 数据验证
         // 2.生成token
+        // 拿到 用户信息, 因为在 validator中的登录验证，已经挂载了
+        const user = req.user.toJSON()
+
+        // 把用户的id传过来就可以
+        const token = await jwt.sign({
+            userId: user._id
+        }, jwtSecret)
         // 3.发送成功响应(包含 token 的用户信息)
+        delete user.password
+        res.status(200).json({
+            // 把用户信息和token返回给客户端，
+            ...user,
+            token
+        });
     } catch (err) {
         next(err);
     }
