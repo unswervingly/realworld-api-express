@@ -3,6 +3,9 @@ const express = require("express");
 // 文章处理请求的函数
 const articleCtrl = require('../controller/article')
 
+// 身份认证中间件
+const auth = require('../middleware/auth')
+
 const router = express.Router();
 
 // 列出文章
@@ -15,7 +18,7 @@ router.get("/feed", articleCtrl.feedArticles);
 router.get("/:slug", articleCtrl.getArticles);
 
 // 创建文章
-router.post("/", articleCtrl.createArticles);
+router.post("/", auth, articleCtrl.createArticles);
 
 // 更新文章
 router.put("/:slug", articleCtrl.updateArticles);

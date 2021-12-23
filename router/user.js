@@ -9,6 +9,10 @@ const userCtrl = require('../controller/user');
 // 数据验证的中间件
 const userValidator = require('../validator/user');
 
+// 身份认证中间件
+const auth = require('../middleware/auth')
+
+
 // 1. 创建路由实例
 // 路由实例相当于一个 mini Express实例
 const router = express.Router()
@@ -20,11 +24,11 @@ router.post('/users/login', userValidator.login, userCtrl.login)
 // 用户注册
 router.post('/users', userValidator.register, userCtrl.register) //执行具体的控制器处理
 
-// 获取当前用户
-router.get('/users', userCtrl.getCurrentUser)
+// 获取当前登录用户
+router.get('/users', auth, userCtrl.getCurrentUser)
 
-// 更新用户
-router.put('/users', userCtrl.updateUser)
+// 更新当前登录用户
+router.put('/users', auth, userCtrl.updateUser)
 
 
 

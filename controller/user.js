@@ -64,7 +64,9 @@ exports.register = async (req, res, next) => {
 exports.getCurrentUser = async (req, res, next) => {
     try {
         // 处理请求
-        res.send("get /user");
+        res.status(200).json({
+            user: req.user
+        })
     } catch (err) {
         next(err);
     }
